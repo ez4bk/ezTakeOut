@@ -4051,7 +4051,7 @@
             var restoreActiveInstance = setActiveInstance(vm);
             vm._vnode = vnode;
             // Vue.prototype.__patch__ is injected in entry points
-            // based on the rendering backend used.
+            // based on the rendering employee used.
             if (!prevVnode) {
                 // initial render
                 vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */);
@@ -5988,12 +5988,12 @@
         return map
     }
 
-    function createPatchFunction(backend) {
+    function createPatchFunction(employee) {
         var i, j;
         var cbs = {};
 
-        var modules = backend.modules;
-        var nodeOps = backend.nodeOps;
+        var modules = employee.modules;
+        var nodeOps = employee.nodeOps;
 
         for (i = 0; i < hooks.length; ++i) {
             cbs[hooks[i]] = [];
