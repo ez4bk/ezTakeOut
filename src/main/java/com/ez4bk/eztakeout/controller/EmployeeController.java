@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/api/employee")
 public class EmployeeController {
 
     @Autowired
@@ -44,5 +46,33 @@ public class EmployeeController {
 
         request.getSession().setAttribute("employee", tempEmployee.getId());
         return R.success(tempEmployee);
+    }
+
+    @PostMapping("/logout")
+    public R<String> logout(HttpServletRequest request) {
+        request.getSession().removeAttribute("employee");
+        return R.success("Logout successfully");
+    }
+
+    /**
+     * Add employee
+     *
+     * @param employee to be added
+     * @return
+     */
+    @PostMapping
+    public R<String> save(HttpServletRequest request, @RequestBody Employee employee) {
+        log.info("Add employee: {}", employee.toString());
+        employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+
+        Long empId = (Long) request.getSession().getAttribute("employee");
+        employee.setCreateUser(empId);
+        employee.setUpdateUser(empId);
+
+        employeeService.save(employee);
+
+        return R.success("Add employee successfully");
     }
 }
