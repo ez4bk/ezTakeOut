@@ -19,12 +19,19 @@ public class GlobalExceptionHandler {
     /**
      * Handle SQLIntegrityConstraintViolationException
      *
-     * @param e
-     * @return
+     * @param e Expecting SQLIntegrityConstraintViolationException
+     * @return R<String> Error message
      */
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public R<String> exceptionHandler(Exception e) {
         log.error(e.getMessage());
-        return R.error("Server error");
+
+        if (e.getMessage().contains("Duplicate entry")) {
+            String duplicateEntry = e.getMessage().split("Duplicate entry")[1].split(" ")[1];
+            String msg = duplicateEntry + " already exists";
+            return R.error(msg);
+        }
+
+        return R.error("Unknown error in database operation.");
     }
 }
