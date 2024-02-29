@@ -1,10 +1,10 @@
 package com.ez4bk.eztakeout.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ez4bk.eztakeout.common.R;
 import com.ez4bk.eztakeout.entity.Employee;
 import com.ez4bk.eztakeout.service.EmployeeService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -117,5 +117,14 @@ public class EmployeeController {
         employee.setUpdateUser(currEmpId);
         employeeService.updateById(employee);
         return R.success("Update employee successfully");
+    }
+
+    @GetMapping("/{id}")
+    public R<Employee> getById(@PathVariable Long id) {
+        Employee employee = employeeService.getById(id);
+        if (employee == null) {
+            return R.error("Employee does not exist");
+        }
+        return R.success(employee);
     }
 }
