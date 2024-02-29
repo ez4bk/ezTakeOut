@@ -113,6 +113,9 @@ public class EmployeeController {
         if (!currEmpName.contains("admin") && !Objects.equals(employeeInDB.getStatus(), employee.getStatus())) {
             return R.error("Illegal operation, only admin can modify the employee's status.");
         }
+        if (currEmpId.equals(employee.getId())) {
+            return R.error("Illegal operation, cannot modify your own information.");
+        }
         employee.setUpdateTime(LocalDateTime.now());
         employee.setUpdateUser(currEmpId);
         employeeService.updateById(employee);
