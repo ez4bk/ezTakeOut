@@ -46,6 +46,20 @@ a:hover {
     border-right: solid 1px #ebeef5 !important;
 }
 
+.enableBut {
+    color: #67c23a !important;
+    position: relative;
+}
+
+.enableBut::after {
+    content: "";
+    position: absolute;
+    right: -6px;
+    height: 14px;
+    width: 0px;
+    border-right: solid 1px #ebeef5 !important;
+}
+
 .delBut {
     color: #f56c6c !important;
     position: relative;
@@ -63,6 +77,7 @@ a:hover {
 .non::after {
     display: none;
 }
+
 
 div:focus {
     outline: none;
