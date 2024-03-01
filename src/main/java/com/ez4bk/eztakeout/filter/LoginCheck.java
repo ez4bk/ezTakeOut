@@ -1,6 +1,7 @@
 package com.ez4bk.eztakeout.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.ez4bk.eztakeout.common.BaseContext;
 import com.ez4bk.eztakeout.common.R;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -34,8 +35,11 @@ public class LoginCheck implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
+
         Object employee = request.getSession().getAttribute("employee");
         if (employee != null) {
+            Long empId = (Long) employee;
+            BaseContext.setCurrentId(empId);
             filterChain.doFilter(request, response);
             return;
         }

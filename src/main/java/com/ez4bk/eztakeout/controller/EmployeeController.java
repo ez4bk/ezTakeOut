@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Slf4j
@@ -32,6 +31,8 @@ public class EmployeeController {
         queryWrapper.eq(Employee::getUsername, employee.getUsername());
         Employee tempEmployee = employeeService.getOne(queryWrapper);
 
+        log.info("User attempt to login: {}", employee.getUsername());
+
         if (tempEmployee == null) {
             return R.error("User does not exist");
         }
@@ -45,11 +46,15 @@ public class EmployeeController {
         }
 
         request.getSession().setAttribute("employee", tempEmployee.getId());
+
         return R.success(tempEmployee);
     }
 
     @PostMapping("/logout")
     public R<String> logout(HttpServletRequest request) {
+        Long userId = (Long) request.getSession().getAttribute("employee");
+        String username = employeeService.getById(userId).getUsername();
+        log.info(username + " logout");
         request.getSession().removeAttribute("employee");
         return R.success("Logout successfully");
     }
@@ -63,14 +68,8 @@ public class EmployeeController {
     @PostMapping("")
     public R<String> save(HttpServletRequest request, @RequestBody Employee employee) {
         log.info("Add employee: {}", employee.toString());
-        employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
 
-        Long empId = (Long) request.getSession().getAttribute("employee");
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
-
+        employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));  // Default password
         employeeService.save(employee);
 
         return R.success("Add employee successfully");
@@ -86,6 +85,7 @@ public class EmployeeController {
      */
     @GetMapping("/page")
     public R<Page<Employee>> page(int page, int pageSize, String name) {
+        log.info("Employee list paging: page={}, pageSize={}, name={}", page, pageSize, name);
         // Construct page object
         Page<Employee> pageInfo = new Page<>(page, pageSize);
         // Construct query conditions
@@ -116,8 +116,8 @@ public class EmployeeController {
         if (currEmpId.equals(employee.getId())) {
             return R.error("Illegal operation, cannot modify your own information.");
         }
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(currEmpId);
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser(currEmpId);
         employeeService.updateById(employee);
         return R.success("Update employee successfully");
     }
