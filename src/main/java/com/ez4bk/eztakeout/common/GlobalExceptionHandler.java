@@ -24,14 +24,20 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public R<String> exceptionHandler(Exception e) {
-        log.error(e.getMessage());
-
         if (e.getMessage().contains("Duplicate entry")) {
+            log.error("Duplicate entry in database");
             String duplicateEntry = e.getMessage().split("Duplicate entry")[1].split(" ")[1];
             String msg = duplicateEntry + " already exists";
             return R.error(msg);
         }
 
         return R.error("Unknown error in database operation.");
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public R<String> exceptionHandler(CustomException e) {
+        log.error(e.getMessage());
+
+        return R.error(e.getMessage());
     }
 }
