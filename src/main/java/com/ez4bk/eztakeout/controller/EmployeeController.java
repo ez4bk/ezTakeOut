@@ -23,7 +23,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @PostMapping("/login")
-    public R<Employee> login(HttpServletRequest request, @RequestBody Employee employee) {
+    public R<Employee> employeeLogin(HttpServletRequest request, @RequestBody Employee employee) {
         String password = employee.getPassword();
         password = DigestUtils.md5DigestAsHex(password.getBytes());
 
@@ -46,12 +46,13 @@ public class EmployeeController {
         }
 
         request.getSession().setAttribute("employee", tempEmployee.getId());
+        log.info(tempEmployee.getUsername() + " logged in");
 
         return R.success(tempEmployee);
     }
 
     @PostMapping("/logout")
-    public R<String> logout(HttpServletRequest request) {
+    public R<String> employeeLogout(HttpServletRequest request) {
         Long userId = (Long) request.getSession().getAttribute("employee");
         String username = employeeService.getById(userId).getUsername();
         log.info(username + " logout");
@@ -66,7 +67,7 @@ public class EmployeeController {
      * @return R<String>  Add employee result
      */
     @PostMapping("")
-    public R<String> save(HttpServletRequest request, @RequestBody Employee employee) {
+    public R<String> addEmployee(HttpServletRequest request, @RequestBody Employee employee) {
         log.info("Add employee: {}", employee.toString());
 
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));  // Default password
@@ -84,7 +85,7 @@ public class EmployeeController {
      * @return Employee list in Page type
      */
     @GetMapping("/page")
-    public R<Page<Employee>> page(int page, int pageSize, String name) {
+    public R<Page<Employee>> pageEmployee(int page, int pageSize, String name) {
         log.info("Employee list paging: page={}, pageSize={}, name={}", page, pageSize, name);
         // Construct page object
         Page<Employee> pageInfo = new Page<>(page, pageSize);
@@ -104,7 +105,7 @@ public class EmployeeController {
      * @return R<String>  Update employee result
      */
     @PutMapping
-    public R<String> update(HttpServletRequest request, @RequestBody Employee employee) {
+    public R<String> updateEmployee(HttpServletRequest request, @RequestBody Employee employee) {
         log.info("Update employee: {}", employee.toString());
         Long currEmpId = (Long) request.getSession().getAttribute("employee");
 
@@ -123,7 +124,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public R<Employee> getById(@PathVariable Long id) {
+    public R<Employee> getEmployeeById(@PathVariable Long id) {
         Employee employee = employeeService.getById(id);
         if (employee == null) {
             return R.error("Employee does not exist");
