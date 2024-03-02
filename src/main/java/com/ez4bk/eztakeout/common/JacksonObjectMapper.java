@@ -19,6 +19,10 @@ import java.time.format.DateTimeFormatter;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 
+/**
+ * JacksonObjectMapper is a custom ObjectMapper that can handle LocalDateTime,
+ * LocalDate, LocalTime, BigInteger, and Long.
+ */
 public class JacksonObjectMapper extends ObjectMapper {
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -29,6 +33,7 @@ public class JacksonObjectMapper extends ObjectMapper {
         this.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
         this.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
+        //Create a module to set up rules for deserialization and serialization
         SimpleModule simpleModule = new SimpleModule()
                 .addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))
                 .addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)))
@@ -40,7 +45,7 @@ public class JacksonObjectMapper extends ObjectMapper {
                 .addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)))
                 .addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)));
 
-        //注册功能模块 例如，可以添加自定义序列化器和反序列化器
+        //Register the module
         this.registerModule(simpleModule);
 
     }
