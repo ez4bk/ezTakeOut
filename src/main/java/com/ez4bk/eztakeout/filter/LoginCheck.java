@@ -43,6 +43,8 @@ public class LoginCheck implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
+
+        log.warn("Illegal access: '{}', no login session", requestURI);
         response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
     }
 
