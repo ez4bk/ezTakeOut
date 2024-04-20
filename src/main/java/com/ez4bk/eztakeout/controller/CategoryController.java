@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/category")
@@ -41,5 +43,27 @@ public class CategoryController {
         log.info("Delete category: id={}", id);
         categoryService.removeByIdSafe(id);
         return R.success("Delete category successfully");
+    }
+
+    @PutMapping
+    public R<String> updateCategory(@RequestBody Category category) {
+        log.info("Update category: id={}", category.getId());
+        categoryService.updateById(category);
+        return R.success("Update category successfully");
+    }
+
+    /***
+     * Get category list by condition
+     * @param category dish category
+     * @return R return type
+     */
+    @GetMapping("/list")
+    public R<List<Category>> list(Category category) {
+        log.info("Category list: {}", category);
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(category.getType() != null, Category::getType, category.getType());
+        queryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
+        List<Category> list = categoryService.list(queryWrapper);
+        return R.success(list);
     }
 }
