@@ -28,6 +28,7 @@ public class LoginCheck implements Filter {
                 "/api/employee/logout",
                 "/employee/**",
                 "/customer/**",
+                "/common/**",
         };
 
         boolean pass = checkURIs(requestURI, urls);

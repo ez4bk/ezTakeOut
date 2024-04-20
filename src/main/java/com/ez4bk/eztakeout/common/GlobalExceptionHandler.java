@@ -37,7 +37,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public R<String> exceptionHandler(CustomException e) {
         log.error(e.getMessage());
-
         return R.error(e.getMessage());
     }
 }
