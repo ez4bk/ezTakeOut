@@ -58,7 +58,7 @@ public class CategoryController {
      * @return R return type
      */
     @GetMapping("/list")
-    public R<List<Category>> list(Category category) {
+    public R<List<Category>> dropDownCategoryList(Category category) {
         log.info("Category list: {}", category);
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(category.getType() != null, Category::getType, category.getType());
