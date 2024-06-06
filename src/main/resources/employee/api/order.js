@@ -15,7 +15,7 @@ const queryOrderDetailById = (id) => {
     })
 }
 
-// 取消，派送，完成接口
+// Cancel，派送，完成接口
 const editOrderDetail = (params) => {
     return $axios({
         url: '/api/order',

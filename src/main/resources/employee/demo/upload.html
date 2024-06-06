@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文件上传</title>
+    <title>File Upload</title>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="../plugins/element-ui/index.css"/>
     <link rel="stylesheet" href="../styles/common.css"/>
@@ -48,12 +48,12 @@
                     const suffix = file.name.split('.')[1]
                     const size = file.size / 1024 / 1024 < 2
                     if (['png', 'jpeg', 'jpg'].indexOf(suffix) < 0) {
-                        this.$message.error('上传图片只支持 png、jpeg、jpg 格式！')
+                        this.$message.error('Please upload a picture in PNG, JPEG, JPG format!')
                         this.$refs.upload.clearFiles()
                         return false
                     }
                     if (!size) {
-                        this.$message.error('上传文件大小不能超过 2MB!')
+                        this.$message.error('The picture size cannot exceed 2MB!')
                         return false
                     }
                     return file

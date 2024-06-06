@@ -56,11 +56,11 @@
             console.log('err' + error)
             let {message} = error;
             if (message == "Network Error") {
-                message = "后端接口连接异常";
+                message = "Backend Connection Failed";
             } else if (message.includes("timeout")) {
-                message = "系统接口请求超时";
+                message = "Request Timeout";
             } else if (message.includes("Request failed with status code")) {
-                message = "系统接口" + message.substr(message.length - 3) + "异常";
+                message = "Interface " + message.substr(message.length - 3) + " Error";
             }
             window.ELEMENT.Message({
                 message: message,
