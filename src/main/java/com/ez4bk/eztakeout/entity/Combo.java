@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class Setmeal implements Serializable {
+public class Combo implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private Long id;

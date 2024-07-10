@@ -13,12 +13,12 @@ import java.time.LocalDateTime;
  * 套餐菜品关系
  */
 @Data
-public class SetmealDish implements Serializable {
+public class ComboDish implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
     private Long id;
-    private Long setmealId;
+    private Long comboId;
     private Long dishId;
     private String name;
     private BigDecimal price;

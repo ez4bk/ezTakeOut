@@ -319,7 +319,7 @@
                             if (res[0].data[0].type === 1) {
                                 this.getDishList()
                             } else {
-                                this.getSetmealData()
+                                this.getComboData()
                             }
                         }
                     } else {
@@ -340,7 +340,7 @@
                 if (type === 1) {//菜品
                     this.getDishList()
                 } else {
-                    this.getSetmealData()
+                    this.getComboData()
                 }
             },
             //获取菜品数据
@@ -366,19 +366,19 @@
                     this.$notify({type: 'warning', message: res.msg});
                 }
             },
-            //获取套餐数据setmealId
-            async getSetmealData() {
+            //获取套餐数据comboId
+            async getComboData() {
                 if (!this.categoryId) {
                     return
                 }
-                const res = await setmealListApi({categoryId: this.categoryId, status: 1})
+                const res = await comboListApi({categoryId: this.categoryId, status: 1})
                 if (res.code === 1) {
                     let dishList = res.data
                     const cartData = this.cartData
                     if (dishList.length > 0 && cartData.length > 0) {
                         dishList.forEach(dish => {
                             cartData.forEach(cart => {
-                                if (dish.id === cart.setmealId) {
+                                if (dish.id === cart.comboId) {
                                     dish.number = cart.number
                                 }
                             })
@@ -404,14 +404,14 @@
                     amount: item.price / 100,//金额
                     dishFlavor: item.dishFlavor,//口味  如果没有传undefined
                     dishId: undefined,//菜品id
-                    setmealId: undefined,//套餐id
+                    comboId: undefined,//套餐id
                     name: item.name,
                     image: item.image
                 }
                 if (Array.isArray(item.flavors)) {//表示是菜品
                     params.dishId = item.id
                 } else {//表示套餐 套餐没有口味
-                    params.setmealId = item.id
+                    params.comboId = item.id
                 }
                 const res = await addCartApi(params)
                 if (res.code === 1) {
@@ -436,7 +436,7 @@
                 }
                 if (!Array.isArray(item.flavors)) {
                     params = {
-                        setmealId: item.id,
+                        comboId: item.id,
                     }
                 }
                 const res = await updateCartApi(params)
@@ -467,14 +467,14 @@
                     amount: item.amount,//金额
                     dishFlavor: item.dishFlavor,//口味  如果没有传undefined
                     dishId: item.dishId,//菜品id
-                    setmealId: item.setmealId,//套餐id
+                    comboId: item.comboId,//套餐id
                     name: item.name,
                     image: item.image
                 }
                 const res = await addCartApi(params)
                 if (res.code === 1) {
                     this.dishList.forEach(dish => {
-                        if (dish.id === (item.dishId || item.setmealId)) {
+                        if (dish.id === (item.dishId || item.comboId)) {
                             dish.number = res.data.number
                         }
                     })
@@ -488,12 +488,12 @@
             async cartNumberSubtract(item) {
                 let params = {
                     dishId: item.dishId,
-                    setmealId: item.setmealId,
+                    comboId: item.comboId,
                 }
                 const res = await updateCartApi(params)
                 if (res.code === 1) {
                     this.dishList.forEach(dish => {
-                        if (dish.id === (item.dishId || item.setmealId)) {
+                        if (dish.id === (item.dishId || item.comboId)) {
                             dish.number = (res.data.number === 0 ? undefined : res.data.number)
                         }
                     })
@@ -506,7 +506,7 @@
             //修改商品列表中的数据number
             changeDishList(item) {
                 for (let ele of this.dishList) {
-                    if (ele.id === (item.setmealId || item.dishId)) {
+                    if (ele.id === (item.comboId || item.dishId)) {
                         ele.number = item.number
                     }
                 }

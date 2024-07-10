@@ -1,51 +1,51 @@
 // 查询列表数据
-const getSetmealPage = (params) => {
+const getComboPage = (params) => {
     return $axios({
-        url: '/api/setmeal/page',
+        url: '/api/combo/page',
         method: 'get',
         params
     })
 }
 
 // 删除数据接口
-const deleteSetmeal = (ids) => {
+const deleteCombo = (ids) => {
     return $axios({
-        url: '/api/setmeal',
+        url: '/api/combo',
         method: 'delete',
         params: {ids}
     })
 }
 
 // 修改数据接口
-const editSetmeal = (params) => {
+const editCombo = (params) => {
     return $axios({
-        url: '/api/setmeal',
+        url: '/api/combo',
         method: 'put',
         data: {...params}
     })
 }
 
 // 新增数据接口
-const addSetmeal = (params) => {
+const addCombo = (params) => {
     return $axios({
-        url: '/api/setmeal',
+        url: '/api/combo',
         method: 'post',
         data: {...params}
     })
 }
 
 // 查询详情接口
-const querySetmealById = (id) => {
+const queryComboById = (id) => {
     return $axios({
-        url: `/api/setmeal/${id}`,
+        url: `/api/combo/${id}`,
         method: 'get'
     })
 }
 
 // 批量起售禁售
-const setmealStatusByStatus = (params) => {
+const comboStatusByStatus = (params) => {
     return $axios({
-        url: `/api/setmeal/status/${params.status}`,
+        url: `/api/combo/status/${params.status}`,
         method: 'post',
         params: {ids: params.ids}
     })

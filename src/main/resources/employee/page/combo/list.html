@@ -16,7 +16,7 @@
         <div class="tableBar">
             <el-input
                     v-model="input"
-                    placeholder="Enter setmeal name here"
+                    placeholder="Enter combo name here"
                     style="width: 250px"
                     clearable
                     @keyup.enter.native="handleQuery"
@@ -40,7 +40,7 @@
                         type="primary"
                         @click="addSetMeal('add')"
                 >
-                    + Add Setmeal
+                    + Add Combo
                 </el-button>
             </div>
         </div>
@@ -56,7 +56,7 @@
             ></el-table-column>
             <el-table-column
                     prop="name"
-                    label="Setmeal Name"
+                    label="Combo Name"
             ></el-table-column>
             <el-table-column prop="image" label="Image" align="center">
                 <template slot-scope="{ row }">
@@ -170,7 +170,7 @@
                     pageSize: this.pageSize,
                     name: this.input ? this.input : undefined
                 }
-                await getSetmealPage(params).then(res => {
+                await getComboPage(params).then(res => {
                     if (String(res.code) === '1') {
                         this.tableData = res.data.records || []
                         this.counts = res.data.total
@@ -192,13 +192,13 @@
                     window.parent.menuHandle({
                         id: '5',
                         url: '/employee/page/combo/add.html',
-                        name: 'Add Setmeal'
+                        name: 'Add Combo'
                     }, true)
                 } else {
                     window.parent.menuHandle({
                         id: '5',
                         url: '/employee/page/combo/add.html?id=' + st,
-                        name: 'Update Setmeal'
+                        name: 'Update Combo'
                     }, true)
                 }
             },
@@ -207,14 +207,14 @@
             deleteHandle(type, id) {
                 if (type === 'MultiDel' && id === null) {
                     if (this.checkList.length === 0) {
-                        return this.$message.error('Please select the setmeal to be deleted!')
+                        return this.$message.error('Please select the combo to be deleted!')
                     }
                 }
-                this.$confirm('Deleting the setmeal, continue?', 'Confirm Deletion', {
+                this.$confirm('Deleting the combo, continue?', 'Confirm Deletion', {
                     'confirmButtonText': 'Confirm',
                     'cancelButtonText': 'Cancel',
                 }).then(() => {
-                    deleteSetmeal(type === 'MultiDel' ? this.checkList.join(',') : id).then(res => {
+                    deleteCombo(type === 'MultiDel' ? this.checkList.join(',') : id).then(res => {
                         if (res.code === 1) {
                             this.$message.success('Delete Successfully!')
                             this.handleQuery()
@@ -232,7 +232,7 @@
                 let params = {}
                 if (typeof row === 'string') {
                     if (this.checkList.length == 0) {
-                        this.$message.error('Please select setmeals to be operated!')
+                        this.$message.error('Please select combos to be operated!')
                         return false
                     }
                     params.ids = this.checkList.join(',')
@@ -247,9 +247,9 @@
                     'type': 'warning'
                 }).then(() => {
                     // 起售停售---批量起售停售接口
-                    setmealStatusByStatus(params).then(res => {
+                    comboStatusByStatus(params).then(res => {
                         if (res.code === 1) {
-                            this.$message.success('Update Setmeal Status Successfully!')
+                            this.$message.success('Update Combo Status Successfully!')
                             this.handleQuery()
                         } else {
                             this.$message.error(res.msg || 'Operation Failed')

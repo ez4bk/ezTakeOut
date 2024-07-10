@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ez4bk.eztakeout.common.CustomException;
 import com.ez4bk.eztakeout.entity.Category;
+import com.ez4bk.eztakeout.entity.Combo;
 import com.ez4bk.eztakeout.entity.Dish;
-import com.ez4bk.eztakeout.entity.Setmeal;
 import com.ez4bk.eztakeout.mapper.CategoryMapper;
 import com.ez4bk.eztakeout.service.CategoryService;
+import com.ez4bk.eztakeout.service.ComboService;
 import com.ez4bk.eztakeout.service.DishService;
-import com.ez4bk.eztakeout.service.SetmealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Autowired
     private DishService dishService;
     @Autowired
-    private SetmealService setMealService;
+    private ComboService setMealService;
 
     /**
      * Remove category by id
@@ -34,8 +34,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             throw new CustomException("Category is used by dish");
         }
 
-        LambdaQueryWrapper<Setmeal> setMealQueryWrapper = new LambdaQueryWrapper<>();
-        setMealQueryWrapper.eq(Setmeal::getCategoryId, id);
+        LambdaQueryWrapper<Combo> setMealQueryWrapper = new LambdaQueryWrapper<>();
+        setMealQueryWrapper.eq(Combo::getCategoryId, id);
         long setMealCount = setMealService.count(setMealQueryWrapper);
         if (setMealCount > 0) {
             throw new CustomException("Category is used by set meal");

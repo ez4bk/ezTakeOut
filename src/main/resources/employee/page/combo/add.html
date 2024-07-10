@@ -178,7 +178,7 @@
             width: 100%;
         }
 
-        #combo-add-app .setmealFood .el-form-item__label::before {
+        #combo-add-app .comboFood .el-form-item__label::before {
             content: '*';
             color: #F56C6C;
             margin-right: 4px;
@@ -203,23 +203,23 @@
                 class="demo-ruleForm"
         >
             <div>
-                <el-form-item label="Setmeal Name: " prop="name">
-                    <el-input v-model="ruleForm.name" placeholder="Enter the setmeal name here" maxlength="20"/>
+                <el-form-item label="Combo Name: " prop="name">
+                    <el-input v-model="ruleForm.name" placeholder="Enter the combo name here" maxlength="20"/>
                 </el-form-item>
-                <el-form-item label="Setmeal Type: " prop="idType">
-                    <el-select v-model="ruleForm.idType" placeholder="Select the setmeal type" @change="$forceUpdate()">
+                <el-form-item label="Combo Type: " prop="idType">
+                    <el-select v-model="ruleForm.idType" placeholder="Select the combo type" @change="$forceUpdate()">
                         <el-option v-for="(item, index) in setMealList" :key="index" :label="item.name"
                                    :value="item.id"/>
                     </el-select>
                 </el-form-item>
             </div>
             <div>
-                <el-form-item label="Setmeal Price: " prop="price">
-                    <el-input v-model="ruleForm.price" placeholder="Enter the setmeal price here"/>
+                <el-form-item label="Combo Price: " prop="price">
+                    <el-input v-model="ruleForm.price" placeholder="Enter the combo price here"/>
                 </el-form-item>
             </div>
             <div>
-                <el-form-item label="Setmeal Dishes: " class="setmealFood">
+                <el-form-item label="Combo Dishes: " class="comboFood">
                     <el-form-item>
                         <div class="addDish">
                             <span v-if="dishTable.length == 0" class="addBut" @click="openAddDish"> + Add Dish</span>
@@ -258,7 +258,7 @@
                 </el-form-item>
             </div>
             <div>
-                <el-form-item label="Setmeal Image: " class="uploadImg">
+                <el-form-item label="Combo Image: " class="uploadImg">
                     <el-upload
                             class="avatar-uploader"
                             action="/common/upload"
@@ -273,7 +273,7 @@
                 </el-form-item>
             </div>
             <div class="address">
-                <el-form-item label="Setmeal Description: ">
+                <el-form-item label="Combo Description: ">
                     <el-input v-model="ruleForm.description" type="textarea" :rows="3" placeholder=
                             "Description here, max 200 characters" maxlength="200"/>
                 </el-form-item>
@@ -439,12 +439,12 @@
                 return {
                     name: {
                         required: true,
-                        message: 'Please enter setmeal name',
+                        message: 'Please enter combo name',
                         trigger: 'blur',
                     },
                     idType: {
                         required: true,
-                        message: 'Please enter setmeal type',
+                        message: 'Please enter combo type',
                         trigger: 'change',
                     },
                     price: {
@@ -452,7 +452,7 @@
                         // 'message': '请输入套餐价格',
                         validator: (rules, value, callback) => {
                             if (!value) {
-                                callback(new Error('Please enter setmeal price'))
+                                callback(new Error('Please enter combo price'))
                             } else {
                                 const reg = /^\d+(\.\d{0,2})?$/
                                 if (reg.test(value)) {
@@ -494,14 +494,14 @@
         },
         methods: {
             async init() {
-                querySetmealById(this.id).then((res) => {
+                queryComboById(this.id).then((res) => {
                     if (String(res.code) === '1') {
                         this.ruleForm = res.data
                         this.ruleForm.status = res.data.status === '1'
                         this.ruleForm.price = res.data.price / 100
                         this.imageUrl = `/common/download?name=${res.data.image}`
-                        this.checkList = res.data.setmealDishes
-                        this.dishTable = res.data.setmealDishes
+                        this.checkList = res.data.comboDishes
+                        this.dishTable = res.data.comboDishes
                         this.ruleForm.idType = res.data.categoryId
                         // this.ruleForm.password = ''
                     } else {
@@ -565,7 +565,7 @@
                     if (valid) {
                         let prams = {...this.ruleForm}
                         prams.price *= 100
-                        prams.setmealDishes = this.dishTable.map((obj) => ({
+                        prams.comboDishes = this.dishTable.map((obj) => ({
                             copies: obj.copies,
                             dishId: obj.dishId,
                             name: obj.name,
@@ -573,7 +573,7 @@
                         }))
                         prams.status = this.ruleForm ? 1 : 0
                         prams.categoryId = this.ruleForm.idType
-                        if (prams.setmealDishes.length < 1) {
+                        if (prams.comboDishes.length < 1) {
                             this.$message.error('Please select dishes')
                             return
                         }
@@ -584,10 +584,10 @@
                         // delete prams.dishList
                         if (this.actionType == 'add') {
                             delete prams.id
-                            addSetmeal(prams)
+                            addCombo(prams)
                                 .then((res) => {
                                     if (res.code === 1) {
-                                        this.$message.success('Add Setmeal Successfully')
+                                        this.$message.success('Add Combo Successfully')
                                         if (!st) {
                                             this.goBack()
                                         } else {
@@ -617,10 +617,10 @@
                                 })
                         } else {
                             delete prams.updateTime
-                            editSetmeal(prams)
+                            editCombo(prams)
                                 .then((res) => {
                                     if (res.code === 1) {
-                                        this.$message.success('Update Setmeal Successfully')
+                                        this.$message.success('Update Combo Successfully')
                                         this.goBack()
                                     } else {
                                         this.$message.error(res.msg || 'Operation Failed')
@@ -666,7 +666,7 @@
                     {
                         id: '5',
                         url: '/employee/page/combo/list.html',
-                        name: 'Setmeal Management',
+                        name: 'Combo Management',
                     },
                     false
                 )

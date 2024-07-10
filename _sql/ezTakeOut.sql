@@ -476,7 +476,7 @@ CREATE TABLE `order_detail`
     `image`       varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NULL     DEFAULT NULL,
     `order_id`    bigint(20)                                       NOT NULL,
     `dish_id`     bigint(20)                                       NULL     DEFAULT NULL,
-    `setmeal_id`  bigint(20)                                       NULL     DEFAULT NULL,
+    `combo_id` bigint(20) NULL DEFAULT NULL,
     `dish_flavor` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin  NULL     DEFAULT NULL,
     `number`      int(11)                                          NOT NULL DEFAULT 1 COMMENT 'Quantity',
     `amount`      decimal(10, 2)                                   NOT NULL COMMENT 'Cash Amount',
@@ -527,10 +527,10 @@ VALUES (1541359726581313538, '1541359726581313538', 2, 1541355937010843649, 1541
         '2022-06-27 17:56:10', 1, 168.00, '', '13112345678', 'china', NULL, 'geforcelit');
 
 -- ----------------------------
--- Table structure for setmeal
+-- Table structure for combo
 -- ----------------------------
-DROP TABLE IF EXISTS `setmeal`;
-CREATE TABLE `setmeal`
+DROP TABLE IF EXISTS `combo`;
+CREATE TABLE `combo`
 (
     `id`          bigint(20)                                       NOT NULL COMMENT '主键',
     `category_id` bigint(20)                                       NOT NULL COMMENT '菜品分类id',
@@ -546,28 +546,28 @@ CREATE TABLE `setmeal`
     `update_user` bigint(20)                                       NOT NULL COMMENT '修改人',
     `is_deleted`  int(11)                                          NOT NULL DEFAULT 0 COMMENT '是否删除',
     PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `idx_setmeal_name` (`name`) USING BTREE
+    UNIQUE INDEX `idx_combo_name` (`name`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_bin COMMENT = '套餐'
   ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of setmeal
+-- Records of combo
 -- ----------------------------
-INSERT INTO `setmeal`
+INSERT INTO `combo`
 VALUES (1415580119015145474, 1413386191767674881, '儿童套餐A计划', 4000.00, 1, '', '',
         '61d20592-b37f-4d72-a864-07ad5bb8f3bb.jpg', '2021-07-15 15:52:55', '2021-07-15 15:52:55', 1415576781934608386,
         1415576781934608386, 0);
 
 -- ----------------------------
--- Table structure for setmeal_dish
+-- Table structure for combo_dish
 -- ----------------------------
-DROP TABLE IF EXISTS `setmeal_dish`;
-CREATE TABLE `setmeal_dish`
+DROP TABLE IF EXISTS `combo_dish`;
+CREATE TABLE `combo_dish`
 (
     `id`          bigint(20)                                      NOT NULL,
-    `setmeal_id`  varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+    `combo_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
     `dish_id`     varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
     `name`        varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL     DEFAULT NULL,
     `price`       decimal(10, 2)                                  NULL     DEFAULT NULL,
@@ -585,15 +585,15 @@ CREATE TABLE `setmeal_dish`
   ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of setmeal_dish
+-- Records of combo_dish
 -- ----------------------------
-INSERT INTO `setmeal_dish`
+INSERT INTO `combo_dish`
 VALUES (1415580119052894209, '1415580119015145474', '1397862198033297410', 'Soup', 49800.00, 1, 0,
         '2021-07-15 15:52:55', '2021-07-15 15:52:55', 1415576781934608386, 1415576781934608386, 0);
-INSERT INTO `setmeal_dish`
+INSERT INTO `combo_dish`
 VALUES (1415580119061282817, '1415580119015145474', '1413342036832100354', 'Orange Soda', 500.00, 1, 0,
         '2021-07-15 15:52:55', '2021-07-15 15:52:55', 1415576781934608386, 1415576781934608386, 0);
-INSERT INTO `setmeal_dish`
+INSERT INTO `combo_dish`
 VALUES (1415580119069671426, '1415580119015145474', '1413385247889891330', 'Rice', 200.00, 1, 0, '2021-07-15 15:52:55',
         '2021-07-15 15:52:55', 1415576781934608386, 1415576781934608386, 0);
 
@@ -608,7 +608,7 @@ CREATE TABLE `shopping_cart`
     `image`       varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NULL     DEFAULT NULL,
     `user_id`     bigint(20)                                       NOT NULL,
     `dish_id`     bigint(20)                                       NULL     DEFAULT NULL,
-    `setmeal_id`  bigint(20)                                       NULL     DEFAULT NULL,
+    `combo_id` bigint(20) NULL DEFAULT NULL,
     `dish_flavor` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin  NULL     DEFAULT NULL,
     `number`      int(11)                                          NOT NULL DEFAULT 1 COMMENT 'Quantity',
     `amount`      decimal(10, 2)                                   NOT NULL COMMENT 'Cash Amount',

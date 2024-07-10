@@ -28,7 +28,7 @@
                     type="primary"
                     @click="addClass('meal')"
             >
-                + Add Setmeal Category
+                + Add Combo Category
             </el-button>
         </div>
         <el-table
@@ -46,7 +46,7 @@
                     label="Category Type"
             >
                 <template slot-scope="scope">
-                    <span>{{ scope.row.type == '1' ? 'Dish Category' : 'Setmeal Category' }}</span>
+                    <span>{{ scope.row.type == '1' ? 'Dish Category' : 'Combo Category' }}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -198,7 +198,7 @@
                     this.classData.title = 'Add dish category'
                     this.type = '1'
                 } else {
-                    this.classData.title = 'Add setmeal category'
+                    this.classData.title = 'Add combo category'
                     this.type = '2'
                 }
                 this.action = 'add'
