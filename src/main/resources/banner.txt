@@ -6,6 +6,4 @@ o888  `888'            .d88              .o8   `888   .8P'  o888
  888   888       o      888   o.  )88b   888 .  888  `88b.   888  o.  )88b o.  )88b
 o888o o888ooooood8     o888o  8""888P'   "888" o888o  o888o o888o 8""888P' 8""888P'
 
-
-
 ${spring.application.name} - Powered by Spring Boot ${spring-boot.version}
