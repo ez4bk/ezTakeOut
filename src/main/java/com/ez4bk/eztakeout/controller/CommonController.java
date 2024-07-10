@@ -20,7 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/common")
 public class CommonController {
-    @Value("${eztakeout.path}")
+    @Value("${eztakeout.file-path}")
     private String basePath;
 
     @PostMapping("/upload")
