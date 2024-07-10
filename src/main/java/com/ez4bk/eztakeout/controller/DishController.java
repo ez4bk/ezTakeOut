@@ -27,7 +27,7 @@ public class DishController {
 
     @PostMapping
     public R<String> addDish(@RequestBody DishDto dishDto) {
-        log.info("Add dish: {}", dishDto.getName());
+        log.info("Add dish: {}", dishDto);
         dishService.saveWithFlavor(dishDto);
         return R.success("Add dish successfully");
     }
@@ -74,5 +74,17 @@ public class DishController {
         log.info("Update dish: {}", dishDto.getName());
         dishService.updateWithFlavor(dishDto);
         return R.success("Update dish successfully");
+    }
+
+    @GetMapping("/list")
+    public R<List<Dish>> listDish(Dish dish) {
+        log.info("Dish list: {}", dish);
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
+        queryWrapper.eq(Dish::getStatus, 1);
+        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+        List<Dish> list = dishService.list(queryWrapper);
+
+        return R.success(list);
     }
 }

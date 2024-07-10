@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ez4bk.eztakeout.dto.DishDto;
 import com.ez4bk.eztakeout.entity.Dish;
 
+import java.util.List;
+
 public interface DishService extends IService<Dish> {
     // When adding a dish, save the dish and its flavors (two tables)
 
@@ -11,6 +13,8 @@ public interface DishService extends IService<Dish> {
 
     void updateWithFlavor(DishDto dishDto);
 
-    public DishDto getByIdWithFlavor(Long id);
+    DishDto getByIdWithFlavor(Long id);
+
+    void removeWithFlavor(List<Long> ids);
 
 }

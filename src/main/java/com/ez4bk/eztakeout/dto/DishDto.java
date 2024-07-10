@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class DishDto extends Dish {
 
     private List<DishFlavor> flavors = new ArrayList<>();

@@ -38,6 +38,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     }
 
     @Override
+    @Transactional
     public void updateWithFlavor(DishDto dishDto) {
         // Update the dish, pass the dishDto directly since DishDto extends Dish
         this.updateById(dishDto);
@@ -55,6 +56,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         dishFlavorService.saveBatch(flavors);
     }
 
+    @Override
     public DishDto getByIdWithFlavor(Long id) {
         Dish dish = this.getById(id);
 
@@ -67,5 +69,24 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         dishDto.setFlavors(flavors);
 
         return dishDto;
+    }
+
+    @Override
+    @Transactional
+    public void removeWithFlavor(List<Long> ids) {
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(Dish::getId, ids);
+        queryWrapper.eq(Dish::getStatus, 1);
+
+        long count = this.count(queryWrapper);
+        if (count > 0) {
+            throw new RuntimeException("The dish is in use and cannot be deleted.");
+        }
+
+        this.removeByIds(ids);
+
+        LambdaQueryWrapper<DishFlavor> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.in(DishFlavor::getDishId, ids);
+        dishFlavorService.remove(lambdaQueryWrapper);
     }
 }
